@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>로또 번호 생성기</title>
+  
+  <!-- PWA & Mobile Web Meta -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 헤더 -->
+    <header class="app-header">
+      <h1>🎰 로또 6/45 추출기</h1>
+    </header>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="main-content">
+      
+      <!-- 추출 결과 디스플레이 -->
+      <section class="card result-card">
+        <h2>이번 주 추천 번호</h2>
+        <div id="ball-container" class="ball-container">
+          <span class="placeholder-text">번호 생성 버튼을 눌러주세요</span>
+        </div>
+        <div id="stats-info" class="stats-info"></div>
+      </section>
+
+      <!-- 조건 필터 설정 영역 -->
+      <section class="card filter-card">
+        <h3>필터 옵션</h3>
+        
+        <!-- 제외수 설정 -->
+        <div class="form-group">
+          <label for="exclude-input">제외할 번호 (쉼표로 구분)</label>
+          <input type="text" id="exclude-input" placeholder="예: 3, 14, 25" inputmode="numeric">
+        </div>
+
+        <!-- 홀짝 비율 -->
+        <div class="form-group">
+          <label for="odd-even-select">홀 : 짝 비율</label>
+          <select id="odd-even-select">
+            <option value="ANY">상관없음</option>
+            <option value="3:3">3 : 3 (가장 높은 확률)</option>
+            <option value="4:2">4 : 2</option>
+            <option value="2:4">2 : 4</option>
+            <option value="5:1">5 : 1</option>
+            <option value="1:5">1 : 5</option>
+          </select>
+        </div>
+
+        <!-- 합계 범위 필터 -->
+        <div class="form-group">
+          <label>총합 범위 (<span id="sum-range-text">100 ~ 170</span>)</label>
+          <div class="range-inputs">
+            <input type="number" id="min-sum" value="100" min="21" max="255">
+            <span>~</span>
+            <input type="number" id="max-sum" value="170" min="21" max="255">
+          </div>
+        </div>
+      </section>
+
+      <!-- 액션 버튼 -->
+      <button id="generate-btn" class="btn-primary">
+        <span>번호 생성하기</span>
+      </button>
+
+      <!-- 생성 이력 (최근 5회) -->
+      <section class="card history-card">
+        <h3>최근 생성 이력</h3>
+        <ul id="history-list" class="history-list"></ul>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
