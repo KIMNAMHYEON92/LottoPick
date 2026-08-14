@@ -3,18 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>로또 번호 생성기</title>
+  <title>로또 번호 추천 생성기</title>
   
   <!-- PWA & Mobile Web Meta -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="로또추출">
   
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="app">
+    <!-- PWA 앱 설치 유도 배너 (조건 충족 시 자동 노출) -->
+    <div id="pwa-install-banner" class="pwa-banner hidden">
+      <span>📱 앱으로 설치하고 더 편하게 이용하세요!</span>
+      <button id="pwa-install-btn">설치</button>
+    </div>
+
     <!-- 헤더 -->
     <header class="app-header">
       <h1>🎰 로또 6/45 추출기</h1>
@@ -30,6 +37,11 @@
           <span class="placeholder-text">번호 생성 버튼을 눌러주세요</span>
         </div>
         <div id="stats-info" class="stats-info"></div>
+
+        <!-- [신규 기능] 공유 / 복사 버튼 -->
+        <button id="share-btn" class="btn-share hidden">
+          <span>📤 행운의 번호 공유 / 복사하기</span>
+        </button>
       </section>
 
       <!-- 조건 필터 설정 영역 -->
@@ -71,7 +83,7 @@
         <span>번호 생성하기</span>
       </button>
 
-      <!-- 생성 이력 (최근 5회) -->
+      <!-- 생성 이력 -->
       <section class="card history-card">
         <h3>최근 생성 이력</h3>
         <ul id="history-list" class="history-list"></ul>
@@ -79,6 +91,9 @@
 
     </main>
   </div>
+
+  <!-- 토스트 알림 메시지 레이어 -->
+  <div id="toast" class="toast hidden"></div>
 
   <script src="app.js"></script>
 </body>

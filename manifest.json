@@ -1,18 +1,19 @@
 {
-  "name": "로또 번호 추출기",
+  "name": "로또 6/45 추천 생성기",
   "short_name": "로또추출",
-  "start_url": "/",
+  "description": "모바일 맞춤 로또 번호 조건 추출 마이크로 앱",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4f46e5",
   "icons": [
     {
-      "src": "https://via.placeholder.com/192.png?text=Lotto",
+      "src": "https://cdn-icons-png.flaticon.com/512/1041/1041888.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://via.placeholder.com/512.png?text=Lotto",
+      "src": "https://cdn-icons-png.flaticon.com/512/1041/1041888.png",
       "sizes": "512x512",
       "type": "image/png"
     }
