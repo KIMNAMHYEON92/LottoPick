@@ -1,21 +1,29 @@
-# 🤝 LottoPick 기여 가이드라인
+# 🤝 Global Lotto AI Picker 기여 가이드라인
 
-LottoPick 프로젝트에 관심을 가져주셔서 감사합니다! 이슈 제보, 기능 개선, 버그 수정 등 모든 형태의 기여를 환영합니다.
+Global Lotto SaaS 프로젝트에 기여해 주셔서 감사합니다! 
 
-## 🚀 기여 방법
+## 📌 신규 기능 기여 방법
 
-1. 본 저장소를 **Fork**합니다.
-2. 기능 개발을 위한 브랜치를 생성합니다. (`git checkout -b feature/CoolFeature`)
-3. 변경 사항을 커밋합니다. (`git commit -m 'Add some CoolFeature'`)
-4. 브랜치에 푸시합니다. (`git push origin feature/CoolFeature`)
-5. **Pull Request (PR)**를 생성합니다.
+### 1. 새로운 국가의 복권 추가하기
+`app.js` 파일의 `LOTTO_CONFIGS` 객체에 새로운 복권 규칙을 등록합니다:
 
-## 📐 개발 규칙
+```javascript
+LOTTO_CONFIGS.new_lotto = {
+  id: 'new_lotto',
+  name: { ko: '🇯🇵 일본 로또 6', en: '🇯🇵 Japan Lotto 6' },
+  main: { min: 1, max: 43, count: 6 },
+  bonus: null,
+  defaultSum: [95, 165]
+};
+```
 
-- **Vanilla JS 지향**: 별도의 중량 프레임워크(React/Vue 등) 없이 순수 HTML/CSS/JS 구성을 유지하여 경량성을 보장합니다.
-- **Mobile-First**: 모든 UI/UX 변경 사항은 스마트폰 화면 해상도에서 먼져 테스트되어야 합니다.
-- **Cross-Browser**: Safari(iOS), Chrome(Android) 모바일 브라우저 동작을 고려해 주세요.
+### 2. 새로운 언어(i18n) 번역 추가하기
+`app.js` 파일의 `I18N` 객체에 신규 언어 팩(예: `ja`, `es`)을 추가하고 `updateLanguage` 함수에 연결합니다.
 
-## 🐛 버그 제보
+---
 
-이슈(Issue) 탭을 통해 버그가 발생하는 환경(기기, OS, 브라우저)과 재현 단계를 상세히 적어주세요.
+## 📐 개발 원칙
+
+1. **Zero-Dependency**: 번들러(Webpack/Vite)나 무거운 프레임워크 없이 순수 Vanilla JS 환경을 유지합니다.
+2. **Mobile-First**: 모바일 뷰포트(가로 480px 이하)에서의 터치 편의성을 최우선으로 고려합니다.
+3. **Cross-Platform**: iOS Safari와 Android Chrome 모두에서 PWA 및 Web Share API가 정상 동작해야 합니다.
