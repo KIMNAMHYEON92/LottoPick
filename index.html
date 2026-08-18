@@ -3,96 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>로또 번호 추천 생성기</title>
+  <title>Global Lotto Picker SaaS</title>
   
-  <!-- PWA & Mobile Web Meta -->
+  <!-- PWA Meta -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="로또추출">
   
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="app">
-    <!-- PWA 앱 설치 유도 배너 (조건 충족 시 자동 노출) -->
-    <div id="pwa-install-banner" class="pwa-banner hidden">
-      <span>📱 앱으로 설치하고 더 편하게 이용하세요!</span>
-      <button id="pwa-install-btn">설치</button>
+    
+    <!-- 1. 소셜 프루프 (가상 바이럴 라이브 롤링 바) -->
+    <div class="social-proof-bar">
+      <span class="pulse-dot"></span>
+      <span id="social-proof-text" class="social-proof-text">Loading live activities...</span>
     </div>
 
-    <!-- 헤더 -->
+    <!-- 2. 상단 더미 광고 영역 -->
+    <div class="ad-slot ad-slot-top">
+      <span class="ad-label">ADVERTISEMENT</span>
+      <div class="ad-content">📢 [Responsive Ad Banner 320x50 / 300x100]</div>
+    </div>
+
+    <!-- 3. 메인 앱 헤더 -->
     <header class="app-header">
-      <h1>🎰 로또 6/45 추출기</h1>
+      <button id="menu-btn" class="icon-btn" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <h1 id="header-title">🎰 한국 로또 6/45</h1>
+      <button id="lang-toggle-btn" class="lang-btn">EN</button>
     </header>
 
-    <!-- 메인 컨텐츠 영역 -->
+    <!-- 4. 슬라이드 사이드 드로어 메뉴 (다국어 태그 적용) -->
+    <div id="drawer-overlay" class="drawer-overlay hidden"></div>
+    <aside id="side-drawer" class="side-drawer">
+      <div class="drawer-header">
+        <h2 data-i18n="select_lotto">복권 선택</h2>
+        <button id="drawer-close-btn" class="icon-btn">&times;</button>
+      </div>
+      <ul class="lotto-menu-list">
+        <li class="lotto-menu-item active" data-lotto="korea">
+          <span class="flag">🇰🇷</span>
+          <div class="info">
+            <strong data-i18n="lotto_korea_name">한국 로또 6/45</strong>
+            <small data-i18n="lotto_korea_desc">6개 번호 (1~45)</small>
+          </div>
+        </li>
+        <li class="lotto-menu-item" data-lotto="powerball">
+          <span class="flag">🇺🇸</span>
+          <div class="info">
+            <strong data-i18n="lotto_powerball_name">미국 파워볼</strong>
+            <small data-i18n="lotto_powerball_desc">5개 (1~69) + 파워볼 1개 (1~26)</small>
+          </div>
+        </li>
+        <li class="lotto-menu-item" data-lotto="megamillions">
+          <span class="flag">🇺🇸</span>
+          <div class="info">
+            <strong data-i18n="lotto_megamillions_name">미국 메가밀리언</strong>
+            <small data-i18n="lotto_megamillions_desc">5개 (1~70) + 메가볼 1개 (1~25)</small>
+          </div>
+        </li>
+        <li class="lotto-menu-item" data-lotto="euromillions">
+          <span class="flag">🇪🇺</span>
+          <div class="info">
+            <strong data-i18n="lotto_euromillions_name">유럽 유로밀리언</strong>
+            <small data-i18n="lotto_euromillions_desc">5개 (1~50) + 스타볼 2개 (1~12)</small>
+          </div>
+        </li>
+      </ul>
+      <div class="drawer-footer">
+        <span class="version">Global Lotto SaaS v2.0</span>
+      </div>
+    </aside>
+
+    <!-- 5. 메인 앱 컨텐츠 -->
     <main class="main-content">
       
-      <!-- 추출 결과 디스플레이 -->
-      <section class="card result-card">
-        <h2>이번 주 추천 번호</h2>
+      <!-- 추출 결과 카드 -->
+      <section class="card result-card" id="result-card">
+        <div class="card-header">
+          <h2 data-i18n="result_title">이번 주 추천 번호</h2>
+          <span id="vip-badge" class="vip-badge hidden">✨ GOLD AI VIP</span>
+        </div>
+        
         <div id="ball-container" class="ball-container">
-          <span class="placeholder-text">번호 생성 버튼을 눌러주세요</span>
+          <span class="placeholder-text" data-i18n="placeholder">번호 생성 버튼을 눌러주세요</span>
         </div>
         <div id="stats-info" class="stats-info"></div>
 
-        <!-- [신규 기능] 공유 / 복사 버튼 -->
         <button id="share-btn" class="btn-share hidden">
-          <span>📤 행운의 번호 공유 / 복사하기</span>
+          <span data-i18n="share_btn">📤 행운의 번호 공유 / 복사하기</span>
         </button>
       </section>
 
+      <!-- 액션 버튼 영역 -->
+      <div class="action-btn-group">
+        <button id="generate-btn" class="btn-primary">
+          <span data-i18n="generate_btn">기본 번호 생성</span>
+        </button>
+        <button id="gold-ai-btn" class="btn-gold">
+          <span data-i18n="gold_btn">👑 골드 AI VIP 번호 (광고 시청)</span>
+        </button>
+      </div>
+
       <!-- 조건 필터 설정 영역 -->
       <section class="card filter-card">
-        <h3>필터 옵션</h3>
+        <h3 data-i18n="filter_title">필터 옵션</h3>
         
-        <!-- 제외수 설정 -->
         <div class="form-group">
-          <label for="exclude-input">제외할 번호 (쉼표로 구분)</label>
-          <input type="text" id="exclude-input" placeholder="예: 3, 14, 25" inputmode="numeric">
+          <label for="exclude-input" data-i18n="exclude_label">제외할 번호 (쉼표 구분)</label>
+          <input type="text" id="exclude-input" placeholder="예: 3, 14, 25" data-i18n-ph="exclude_ph" inputmode="numeric">
         </div>
 
-        <!-- 홀짝 비율 -->
         <div class="form-group">
-          <label for="odd-even-select">홀 : 짝 비율</label>
+          <label for="odd-even-select" data-i18n="oddeven_label">홀 : 짝 비율</label>
           <select id="odd-even-select">
-            <option value="ANY">상관없음</option>
-            <option value="3:3">3 : 3 (가장 높은 확률)</option>
+            <option value="ANY" data-i18n="opt_any">상관없음</option>
+            <option value="3:3">3 : 3</option>
             <option value="4:2">4 : 2</option>
             <option value="2:4">2 : 4</option>
-            <option value="5:1">5 : 1</option>
-            <option value="1:5">1 : 5</option>
           </select>
         </div>
 
-        <!-- 합계 범위 필터 -->
         <div class="form-group">
-          <label>총합 범위 (<span id="sum-range-text">100 ~ 170</span>)</label>
+          <label data-i18n="sum_label">총합 범위</label>
           <div class="range-inputs">
-            <input type="number" id="min-sum" value="100" min="21" max="255">
+            <input type="number" id="min-sum" value="100">
             <span>~</span>
-            <input type="number" id="max-sum" value="170" min="21" max="255">
+            <input type="number" id="max-sum" value="170">
           </div>
         </div>
       </section>
 
-      <!-- 액션 버튼 -->
-      <button id="generate-btn" class="btn-primary">
-        <span>번호 생성하기</span>
-      </button>
-
-      <!-- 생성 이력 -->
+      <!-- 생성 이력 히스토리 -->
       <section class="card history-card">
-        <h3>최근 생성 이력</h3>
+        <h3 data-i18n="history_title">최근 생성 이력</h3>
         <ul id="history-list" class="history-list"></ul>
       </section>
+
+      <!-- 6. 하단 더미 광고 영역 -->
+      <div class="ad-slot ad-slot-bottom">
+        <span class="ad-label">ADVERTISEMENT</span>
+        <div class="ad-content">📢 [Native / Banner AdSlot Unit]</div>
+      </div>
 
     </main>
   </div>
 
-  <!-- 토스트 알림 메시지 레이어 -->
+  <!-- 7. 보상형 광고 시청 가상 모달 -->
+  <div id="ad-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="ad-video-mock">
+        <div class="ad-badge">Sponsored Ad</div>
+        <div class="ad-animation-box">
+          <div class="spinner"></div>
+          <p data-i18n="ad_loading">고급 AI 패턴 분석 중...</p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <h4 data-i18n="ad_modal_title">💎 프리미엄 당첨 알고리즘 가동 중</h4>
+        <p class="timer-text"><span id="ad-timer">3</span><span data-i18n="ad_sec_left">초 후 번호가 지급됩니다...</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 토스트 피드백 메시지 -->
   <div id="toast" class="toast hidden"></div>
 
   <script src="app.js"></script>

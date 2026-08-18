@@ -8,232 +8,475 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: #f3f4f6;
-  color: #1f2937;
-  padding-bottom: env(safe-area-inset-bottom);
+  background-color: #0f172a;
+  color: #1e293b;
+  display: flex;
+  justify-content: center;
 }
 
 #app {
+  width: 100%;
   max-width: 480px;
-  margin: 0 auto;
   min-height: 100vh;
+  background: #f8fafc;
   display: flex;
   flex-direction: column;
-  background: #ffffff;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  position: relative;
+  overflow-x: hidden;
+  box-shadow: 0 0 25px rgba(0,0,0,0.3);
+}
+
+/* 1. 소셜 프루프 롤링 바 */
+.social-proof-bar {
+  background: #1e293b;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.social-proof-text {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* 2. 광고 슬롯 (Google AdSense Mock) */
+.ad-slot {
+  background: #e2e8f0;
+  border: 1px dashed #94a3b8;
+  border-radius: 8px;
+  margin: 8px 16px;
+  padding: 8px;
+  text-align: center;
   position: relative;
 }
 
-/* PWA 설치 유도 상단 배너 */
-.pwa-banner {
-  background: #312e81;
-  color: #ffffff;
-  padding: 10px 16px;
+.ad-label {
+  font-size: 0.6rem;
+  color: #64748b;
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  letter-spacing: 0.5px;
+}
+
+.ad-content {
+  font-size: 0.8rem;
+  color: #475569;
+  font-weight: 500;
+  padding: 8px 0;
+}
+
+/* 3. 헤더 */
+.app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem;
-  font-weight: 500;
+  padding: 12px 16px;
+  background: #4f46e5;
+  color: white;
 }
 
-.pwa-banner button {
-  background: #6366f1;
-  color: white;
+.app-header h1 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.icon-btn {
+  background: none;
   border: none;
-  padding: 6px 14px;
-  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.lang-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
   font-weight: bold;
   cursor: pointer;
 }
 
-/* 헤더 */
-.app-header {
-  padding: 18px 16px;
-  background: #4f46e5;
-  color: #fff;
-  text-align: center;
-  padding-top: calc(18px + env(safe-area-inset-top));
+/* 4. 슬라이드 사이드 드로어 */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  transition: opacity 0.3s;
 }
 
-.app-header h1 {
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-/* 메인 컨텐츠 */
-.main-content {
-  padding: 16px;
+.side-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  background: white;
+  z-index: 999;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
-.card {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
+.side-drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-header {
   padding: 16px;
-}
-
-.card h2, .card h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #374151;
-}
-
-/* 로또 공 스타일 */
-.ball-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  min-height: 60px;
-  margin: 8px 0;
-}
-
-.ball {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.1rem;
+  background: #4f46e5;
   color: white;
-  box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
-  animation: popIn 0.3s ease-out forwards;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.ball.yellow { background: #eab308; }
-.ball.blue   { background: #3b82f6; }
-.ball.red    { background: #ef4444; }
-.ball.gray   { background: #6b7280; }
-.ball.green  { background: #22c55e; }
-
-@keyframes popIn {
-  0% { transform: scale(0); opacity: 0; }
-  80% { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
+.lotto-menu-list {
+  list-style: none;
+  padding: 12px 0;
+  flex: 1;
 }
 
-.placeholder-text {
-  color: #9ca3af;
-  font-size: 0.9rem;
-}
-
-.stats-info {
-  font-size: 0.85rem;
-  color: #6b7280;
-  text-align: center;
-  margin-top: 8px;
-}
-
-/* [신규] 공유/복사 버튼 */
-.btn-share {
-  width: 100%;
-  margin-top: 12px;
-  padding: 10px;
-  background: #e0e7ff;
-  color: #3730a3;
-  border: 1px solid #c7d2fe;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
+.lotto-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-left: 4px solid transparent;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.btn-share:active {
-  background: #c7d2fe;
+.lotto-menu-item.active {
+  background: #eef2ff;
+  border-left-color: #4f46e5;
 }
 
-/* Form 요소 */
-.form-group {
+.lotto-menu-item .flag {
+  font-size: 1.4rem;
+}
+
+.lotto-menu-item .info strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.lotto-menu-item .info small {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.drawer-footer {
+  padding: 16px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* 5. 카드 및 UI 컨텐츠 */
+.main-content {
+  padding: 12px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 12px;
 }
 
-.form-group label {
-  display: block;
-  font-size: 0.85rem;
-  color: #4b5563;
-  margin-bottom: 4px;
-}
-
-input, select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
+.card h2, .card h3 {
   font-size: 0.95rem;
-  background: white;
-  outline: none;
+  font-weight: 700;
+  color: #334155;
 }
 
-input:focus, select:focus {
-  border-color: #4f46e5;
+.vip-badge {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: bold;
 }
 
-.range-inputs {
+/* 로또 볼 컨테이너 & 볼 디자인 */
+.ball-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  margin: 10px 0;
+}
+
+.ball {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  color: white;
+  box-shadow: inset -2px -2px 5px rgba(0,0,0,0.25), 0 4px 6px rgba(0,0,0,0.12);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* 글로벌 볼 색상 테마 */
+.ball.yellow { background: #eab308; }
+.ball.blue   { background: #3b82f6; }
+.ball.red    { background: #ef4444; }
+.ball.gray   { background: #64748b; }
+.ball.green  { background: #10b981; }
+
+.ball-white {
+  background: #f8fafc;
+  color: #0f172a !important;
+  border: 2px solid #cbd5e1;
+}
+
+.ball-powerball {
+  background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b);
+  border: 2px solid #fee2e2;
+}
+
+.ball-megaball {
+  background: radial-gradient(circle at 30% 30%, #fbbf24, #b45309);
+  border: 2px solid #fef3c7;
+}
+
+.ball-star {
+  background: radial-gradient(circle at 30% 30%, #f59e0b, #78350f);
+  border: 2px solid #fef3c7;
+}
+
+.placeholder-text {
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.stats-info {
+  font-size: 0.8rem;
+  color: #64748b;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* 액션 버튼 그룹 */
+.action-btn-group {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
 .btn-primary {
   width: 100%;
-  padding: 16px;
+  padding: 14px;
   background: #4f46e5;
   color: white;
   border: none;
-  border-radius: 14px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }
 
 .btn-primary:active {
   transform: scale(0.98);
-  background: #4338ca;
 }
 
-.history-list {
-  list-style: none;
+/* 짠테크 골드 AI 버튼 */
+.btn-gold {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-gold:active {
+  transform: scale(0.98);
+}
+
+.btn-share {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  border-radius: 10px;
   font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
+/* 폼 스타일 */
+.form-group { margin-bottom: 10px; }
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: #475569;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+input, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: white;
+  outline: none;
+}
+.range-inputs { display: flex; align-items: center; gap: 8px; }
+
+/* 히스토리 리스트 */
+.history-list { list-style: none; font-size: 0.8rem; }
 .history-item {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.history-item:last-child { border: none; }
+/* 7. 보상형 가상 광고 모달 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
 
-/* [신규] 토스트 알림 피드백 */
+.modal-content {
+  background: white;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.ad-video-mock {
+  background: #0f172a;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: white;
+}
+
+.ad-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(255,255,255,0.2);
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 8px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-body h4 {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #1e293b;
+}
+
+.timer-text {
+  font-size: 0.85rem;
+  color: #d97706;
+  font-weight: 700;
+}
+
+/* 토스트 */
 .toast {
   position: fixed;
-  bottom: 24px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(17, 24, 39, 0.9);
+  background: rgba(15, 23, 42, 0.95);
   color: white;
-  padding: 12px 24px;
-  border-radius: 25px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  animation: fadeIn 0.2s ease-out;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translate(-50%, 10px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }
