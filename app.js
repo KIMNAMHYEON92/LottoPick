@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
       lotto_megamillions_desc: "5개 (1~70) + 메가볼 1개 (1~25)",
       lotto_euromillions_name: "유럽 유로밀리언",
       lotto_euromillions_desc: "5개 (1~50) + 스타볼 2개 (1~12)",
+      drawer_kofi: "Buy Me a Coffee",
+      drawer_devlab: "개발자 연구실 (기타 프로젝트)",
       result_title: "이번 주 추천 번호",
       placeholder: "번호 생성 버튼을 눌러주세요",
       generate_btn: "기본 번호 생성",
@@ -52,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
       lotto_megamillions_desc: "5 Balls (1~70) + 1 MB (1~25)",
       lotto_euromillions_name: "EuroMillions",
       lotto_euromillions_desc: "5 Balls (1~50) + 2 Stars (1~12)",
+      drawer_kofi: "Buy Me a Coffee",
+      drawer_devlab: "Developer's Lab (Other Projects)",
       result_title: "Recommended Numbers",
       placeholder: "Tap Generate to pick numbers",
       generate_btn: "Generate Numbers",
@@ -84,7 +88,57 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ==========================================
-  // 2. 글로벌 복권 규칙 설정
+  // 2. 자가 프로모션 배너 데이터 3종
+  // ==========================================
+  const PROMO_BANNERS = [
+    {
+      id: 'memecats',
+      badge: '🐱 MemeCats',
+      title: {
+        ko: '내 성격과 똑닮은 밈고양이는?',
+        en: 'Which meme cat matches your vibe?'
+      },
+      cta: {
+        ko: '[테스트 시작]',
+        en: '[Start Test]'
+      },
+      themeClass: 'banner-memecats',
+      url: '#' // 원하는 랜딩 URL로 변경 가능
+    },
+    {
+      id: 'emhs',
+      badge: '📖 EMHS Gallery',
+      title: {
+        ko: '웹소설: 영원한 모태솔로 갤러리 무료 연재 중',
+        en: 'Web Novel: Free chapters ongoing!'
+      },
+      cta: {
+        ko: '[읽어보기]',
+        en: '[Read Now]'
+      },
+      themeClass: 'banner-emhs',
+      url: '#' // 원하는 랜딩 URL로 변경 가능
+    },
+    {
+      id: 'github',
+      badge: '💻 GitHub Open Source',
+      title: {
+        ko: '이 프로젝트의 코드가 궁금하다면?',
+        en: 'Curious about this project source code?'
+      },
+      cta: {
+        ko: '[GitHub 보기]',
+        en: '[View GitHub]'
+      },
+      themeClass: 'banner-github',
+      url: 'https://github.com/KIMNAMHYEON92/LottoPick' // GitHub 저장소 링크
+    }
+  ];
+
+  let currentBannerIdx = 0;
+
+  // ==========================================
+  // 3. 글로벌 복권 규칙 설정
   // ==========================================
   const LOTTO_CONFIGS = {
     korea: {
@@ -124,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let history = [];
 
   // ==========================================
-  // 3. UI 렌더링 및 i18n 언어 전환
+  // 4. UI 렌더링 및 i18n 언어 전환
   // ==========================================
   function updateLanguage(lang) {
     currentLang = lang;
@@ -156,8 +210,9 @@ document.addEventListener('DOMContentLoaded', () => {
         `${I18N[lang].sum}: ${currentResult.sum} | ${I18N[lang].oddeven}: ${currentResult.odds}:${currentResult.evens}`;
     }
 
-    // 5) 소셜 피드 즉시 갱신
+    // 5) 소셜 피드 & 프로모션 배너 즉시 갱신
     rotateSocialProof(true);
+    renderPromoBanner(currentBannerIdx, false);
   }
 
   document.getElementById('lang-toggle-btn').addEventListener('click', () => {
@@ -165,7 +220,61 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================
-  // 4. 드로어 메뉴 핸들러
+  // 5. 자가 프로모션 배너 5초 롤링 엔진
+  // ==========================================
+  function renderPromoBanner(index, animate = true) {
+    const banner = PROMO_BANNERS[index];
+    const topLink = document.getElementById('top-promo-link');
+    const bottomLink = document.getElementById('bottom-promo-link');
+
+    if (!topLink || !bottomLink) return;
+
+    const updateDOM = () => {
+      // 클래스 교체 (그라데이션 테마)
+      ['banner-memecats', 'banner-emhs', 'banner-github'].forEach(cls => {
+        topLink.classList.remove(cls);
+        bottomLink.classList.remove(cls);
+      });
+      topLink.classList.add(banner.themeClass);
+      bottomLink.classList.add(banner.themeClass);
+
+      // 링크 URL 업데이트
+      topLink.href = banner.url;
+      bottomLink.href = banner.url;
+
+      // 텍스트 업데이트
+      document.getElementById('top-promo-badge').textContent = banner.badge;
+      document.getElementById('top-promo-title').textContent = banner.title[currentLang];
+      document.getElementById('top-promo-cta').textContent = banner.cta[currentLang];
+
+      document.getElementById('bottom-promo-badge').textContent = banner.badge;
+      document.getElementById('bottom-promo-title').textContent = banner.title[currentLang];
+      document.getElementById('bottom-promo-cta').textContent = banner.cta[currentLang];
+    };
+
+    if (animate) {
+      topLink.classList.add('fade-out');
+      bottomLink.classList.add('fade-out');
+
+      setTimeout(() => {
+        updateDOM();
+        topLink.classList.remove('fade-out');
+        bottomLink.classList.remove('fade-out');
+      }, 350);
+    } else {
+      updateDOM();
+    }
+  }
+
+  // 배너 초기화 및 5초 주기 롤링
+  renderPromoBanner(0, false);
+  setInterval(() => {
+    currentBannerIdx = (currentBannerIdx + 1) % PROMO_BANNERS.length;
+    renderPromoBanner(currentBannerIdx, true);
+  }, 5000);
+
+  // ==========================================
+  // 6. 드로어 메뉴 핸들러
   // ==========================================
   const menuBtn = document.getElementById('menu-btn');
   const drawerCloseBtn = document.getElementById('drawer-close-btn');
@@ -204,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================
-  // 5. 가상 소셜 프루프 롤링 배너
+  // 7. 가상 소셜 프루프 롤링 배너
   // ==========================================
   const socialText = document.getElementById('social-proof-text');
   let feedIndex = 0;
@@ -226,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(() => rotateSocialProof(false), 5000);
 
   // ==========================================
-  // 6. 다국가 복권 번호 추출 알고리즘
+  // 8. 다국가 복권 번호 추출 알고리즘
   // ==========================================
   function generateNumbers(isVIP = false) {
     const config = LOTTO_CONFIGS[currentLottoKey];
@@ -351,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 7. 보상형 짠테크 (골드 AI VIP) 시뮬레이션
+  // 9. 보상형 짠테크 (골드 AI VIP) 시뮬레이션
   // ==========================================
   const goldBtn = document.getElementById('gold-ai-btn');
   const adModal = document.getElementById('ad-modal');
@@ -380,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================
-  // 8. 공유 및 클립보드 복사
+  // 10. SNS 공유 및 클립보드 복사
   // ==========================================
   document.getElementById('share-btn').addEventListener('click', async () => {
     if (!currentResult) return;

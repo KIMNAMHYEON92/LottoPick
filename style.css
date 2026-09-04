@@ -26,7 +26,9 @@ body {
   box-shadow: 0 0 25px rgba(0,0,0,0.3);
 }
 
-/* 1. 소셜 프루프 롤링 바 */
+/* ==========================================
+   1. 소셜 프루프 롤링 바
+   ========================================== */
 .social-proof-bar {
   background: #1e293b;
   color: #94a3b8;
@@ -55,37 +57,103 @@ body {
 }
 
 .social-proof-text {
-  animation: fadeIn 0.4s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
-/* 2. 광고 슬롯 (Google AdSense Mock) */
+/* ==========================================
+   2. 자가 프로모션 롤링 배너 (AdSlot Fallback)
+   ========================================== */
 .ad-slot {
-  background: #e2e8f0;
-  border: 1px dashed #94a3b8;
-  border-radius: 8px;
   margin: 8px 16px;
-  padding: 8px;
-  text-align: center;
   position: relative;
 }
 
 .ad-label {
-  font-size: 0.6rem;
-  color: #64748b;
-  position: absolute;
-  top: 2px;
-  right: 6px;
+  font-size: 0.55rem;
+  color: #94a3b8;
   letter-spacing: 0.5px;
+  position: absolute;
+  top: -13px;
+  right: 4px;
+  font-weight: 600;
 }
 
-.ad-content {
+/* 배너 기본 레이아웃 */
+.promo-banner {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 14px;
+  min-height: 52px;
+  gap: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.promo-banner:active {
+  transform: scale(0.98);
+}
+
+/* 배너 전환 페이드 효과 */
+.promo-banner.fade-out {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* 배너 테마 3종 (CSS 그라데이션) */
+.banner-memecats {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+}
+
+.banner-emhs {
+  background: linear-gradient(135deg, #1e3a8a, #0f172a);
+}
+
+.banner-github {
+  background: linear-gradient(135deg, #334155, #1e293b);
+}
+
+.promo-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+  padding: 5px 8px;
+  border-radius: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.promo-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.promo-title {
   font-size: 0.8rem;
-  color: #475569;
-  font-weight: 500;
-  padding: 8px 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #ffffff;
 }
 
-/* 3. 헤더 */
+.promo-cta {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fef08a;
+  margin-top: 2px;
+}
+
+/* ==========================================
+   3. 메인 앱 헤더
+   ========================================== */
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -122,7 +190,9 @@ body {
   cursor: pointer;
 }
 
-/* 4. 슬라이드 사이드 드로어 */
+/* ==========================================
+   4. 사이드 드로어 및 후원/네트워크 링크
+   ========================================== */
 .drawer-overlay {
   position: fixed;
   inset: 0;
@@ -135,7 +205,7 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
+  width: 290px;
   height: 100%;
   background: white;
   z-index: 999;
@@ -162,6 +232,7 @@ body {
   list-style: none;
   padding: 12px 0;
   flex: 1;
+  overflow-y: auto;
 }
 
 .lotto-menu-item {
@@ -194,17 +265,84 @@ body {
   font-size: 0.75rem;
 }
 
-.drawer-footer {
-  padding: 16px;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 0.75rem;
-  border-top: 1px solid #e2e8f0;
+/* 드로어 하단 구분선 */
+.drawer-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 6px 16px 12px;
 }
 
-/* 5. 카드 및 UI 컨텐츠 */
+/* 드로어 후원 및 네트워크 링크 컨테이너 */
+.drawer-network {
+  padding: 0 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Ko-fi 후원 포인트 버튼 (눈에 띄는 옐로우/오렌지 포인트) */
+.drawer-kofi-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ffdd00, #f59e0b);
+  color: #0f172a;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.35);
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.drawer-kofi-btn:active {
+  transform: scale(0.97);
+}
+
+.kofi-icon {
+  font-size: 1.15rem;
+}
+
+/* Developer's Lab 링크 */
+.drawer-devlab-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f1f5f9;
+  color: #475569;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+  transition: background 0.15s;
+}
+
+.drawer-devlab-link:active {
+  background: #e2e8f0;
+}
+
+.devlab-icon {
+  font-size: 0.95rem;
+}
+
+.drawer-footer {
+  padding: 12px 16px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.72rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* ==========================================
+   5. 카드 및 UI 컨텐츠
+   ========================================== */
 .main-content {
-  padding: 12px 16px 24px;
+  padding: 8px 16px 24px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -240,7 +378,7 @@ body {
   font-weight: bold;
 }
 
-/* 로또 볼 컨테이너 & 볼 디자인 */
+/* 볼 컨테이너 & 볼 디자인 */
 .ball-container {
   display: flex;
   flex-wrap: wrap;
@@ -265,7 +403,12 @@ body {
   animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* 글로벌 볼 색상 테마 */
+@keyframes popIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* 복권별 볼 색상 */
 .ball.yellow { background: #eab308; }
 .ball.blue   { background: #3b82f6; }
 .ball.red    { background: #ef4444; }
@@ -329,7 +472,6 @@ body {
   transform: scale(0.98);
 }
 
-/* 짠테크 골드 AI 버튼 */
 .btn-gold {
   width: 100%;
   padding: 14px;
@@ -393,7 +535,9 @@ input, select {
   border-bottom: 1px solid #f1f5f9;
 }
 
-/* 7. 보상형 가상 광고 모달 */
+/* ==========================================
+   6. 보상형 가상 광고 모달
+   ========================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -464,7 +608,9 @@ input, select {
   font-weight: 700;
 }
 
-/* 토스트 */
+/* ==========================================
+   7. 토스트 알림
+   ========================================== */
 .toast {
   position: fixed;
   bottom: 20px;

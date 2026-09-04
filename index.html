@@ -3,8 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Global Lotto Picker SaaS</title>
+  <title>🍀 LottoPick - Global Lottery Number Generator</title>
   
+  <!-- Open Graph / SNS 공유 메타태그 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="🍀 LottoPick - Global Lottery Number Generator">
+  <meta property="og:description" content="한국 6/45, 미국 파워볼, 메가밀리언, 유럽 유로밀리언 지원! 모바일 맞춤 AI 번호 추출 웹앱">
+  <meta property="og:site_name" content="LottoPick">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="🍀 LottoPick - Global Lottery Number Generator">
+  <meta name="twitter:description" content="한국 로또, 파워볼, 메가밀리언 AI 조건 필터링 번호 생성기">
+
   <!-- PWA Meta -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
@@ -22,10 +31,16 @@
       <span id="social-proof-text" class="social-proof-text">Loading live activities...</span>
     </div>
 
-    <!-- 2. 상단 더미 광고 영역 -->
-    <div class="ad-slot ad-slot-top">
-      <span class="ad-label">ADVERTISEMENT</span>
-      <div class="ad-content">📢 [Responsive Ad Banner 320x50 / 300x100]</div>
+    <!-- 2. 상단 슬롯 (자가 프로모션 롤링 배너 탑재) -->
+    <div class="ad-slot ad-slot-top" id="ad-slot-top">
+      <span class="ad-label">SPONSORED</span>
+      <a href="#" id="top-promo-link" class="promo-banner banner-memecats" target="_blank" rel="noopener noreferrer">
+        <div class="promo-badge" id="top-promo-badge">🐱 MemeCats</div>
+        <div class="promo-content">
+          <span class="promo-title" id="top-promo-title">내 성격과 똑닮은 밈고양이는?</span>
+          <span class="promo-cta" id="top-promo-cta">[테스트 시작]</span>
+        </div>
+      </a>
     </div>
 
     <!-- 3. 메인 앱 헤더 -->
@@ -41,13 +56,15 @@
       <button id="lang-toggle-btn" class="lang-btn">EN</button>
     </header>
 
-    <!-- 4. 슬라이드 사이드 드로어 메뉴 (다국어 태그 적용) -->
+    <!-- 4. 슬라이드 사이드 드로어 메뉴 -->
     <div id="drawer-overlay" class="drawer-overlay hidden"></div>
     <aside id="side-drawer" class="side-drawer">
       <div class="drawer-header">
         <h2 data-i18n="select_lotto">복권 선택</h2>
         <button id="drawer-close-btn" class="icon-btn">&times;</button>
       </div>
+
+      <!-- 복권 목록 -->
       <ul class="lotto-menu-list">
         <li class="lotto-menu-item active" data-lotto="korea">
           <span class="flag">🇰🇷</span>
@@ -78,15 +95,29 @@
           </div>
         </li>
       </ul>
+
+      <!-- 하단 구분선 및 후원/개발자 링크 섹션 -->
+      <div class="drawer-divider"></div>
+      <div class="drawer-network">
+        <a href="https://ko-fi.com/emhsolo" target="_blank" rel="noopener noreferrer" class="drawer-kofi-btn">
+          <span class="kofi-icon">☕</span>
+          <span class="kofi-text" data-i18n="drawer_kofi">Buy Me a Coffee</span>
+        </a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="drawer-devlab-link">
+          <span class="devlab-icon">🧪</span>
+          <span class="devlab-text" data-i18n="drawer_devlab">Developer's Lab (Other Projects)</span>
+        </a>
+      </div>
+
       <div class="drawer-footer">
-        <span class="version">Global Lotto SaaS v2.0</span>
+        <span class="version">Global Lotto SaaS v2.1</span>
       </div>
     </aside>
 
     <!-- 5. 메인 앱 컨텐츠 -->
     <main class="main-content">
       
-      <!-- 추출 결과 카드 -->
+      <!-- 결과 카드 -->
       <section class="card result-card" id="result-card">
         <div class="card-header">
           <h2 data-i18n="result_title">이번 주 추천 번호</h2>
@@ -148,10 +179,16 @@
         <ul id="history-list" class="history-list"></ul>
       </section>
 
-      <!-- 6. 하단 더미 광고 영역 -->
-      <div class="ad-slot ad-slot-bottom">
-        <span class="ad-label">ADVERTISEMENT</span>
-        <div class="ad-content">📢 [Native / Banner AdSlot Unit]</div>
+      <!-- 6. 하단 슬롯 (자가 프로모션 롤링 배너 탑재) -->
+      <div class="ad-slot ad-slot-bottom" id="ad-slot-bottom">
+        <span class="ad-label">SPONSORED</span>
+        <a href="#" id="bottom-promo-link" class="promo-banner banner-memecats" target="_blank" rel="noopener noreferrer">
+          <div class="promo-badge" id="bottom-promo-badge">🐱 MemeCats</div>
+          <div class="promo-content">
+            <span class="promo-title" id="bottom-promo-title">내 성격과 똑닮은 밈고양이는?</span>
+            <span class="promo-cta" id="bottom-promo-cta">[테스트 시작]</span>
+          </div>
+        </a>
       </div>
 
     </main>
